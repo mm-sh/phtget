@@ -64,10 +64,10 @@ int main(int argc, char *argv[]) {
         exit(EXIT_FAILURE);
     }
 
-    oss << "GET " << reqInfo.url.c_str() << " HTTP/1.1\r\n";
+    oss << "GET " << reqInfo.url << " HTTP/1.1\r\n";
     oss << "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8\r\n";
     oss << "User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537(KHTML, like Gecko) Chrome/47.0.2526Safari/537.36\r\n";
-    oss << "Host: " << reqInfo.host.c_str() << "\r\n";
+    oss << "Host: " << reqInfo.host << "\r\n";
     oss << "Connection: keep-alive\r\n";
     oss << "\r\n";
     header = oss.str();
