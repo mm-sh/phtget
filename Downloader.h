@@ -13,8 +13,7 @@ class Downloader {
 public:
     Downloader() {}
     ~Downloader() {}
-    bool download(std::string fileName,
-            long conentLength, bool showProgress);
+    bool download(std::string fileName, long conentLength, bool showProgress);
     std::string establishConnection(std::string host, int port,
             std::string header, bool verbose);
     void disposeConnection();

@@ -3,12 +3,6 @@
 
 #include <string>
 
-struct TargetInfo {
-    int clientSock;
-    std::string fileName;
-    long contentLength;
-};
-
 struct RequestInfo {
     std::string url;
     std::string protocol;
