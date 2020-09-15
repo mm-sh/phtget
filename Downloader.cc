@@ -116,11 +116,6 @@ std::string Downloader::establishConnection(std::string host, int port,
         return {};
     }
 
-    if (send(clientSocket, header.c_str(), header.size(), 0) == -1) {
-        std::cerr << "ERROR: SENDING FAILED!" << std::endl;
-        return {};
-    }
-
     int memSize = 4096;
     std::string response;
     response.resize(memSize);
