@@ -7,6 +7,7 @@
 
 #include <fstream>
 #include <iostream>
+#include <vector>
 
 #include "Downloader.h"
 
@@ -116,20 +117,35 @@ std::string Downloader::establishConnection(std::string host, int port,
         return {};
     }
 
-    if (send(clientSocket, header.c_str(), header.size(), 0) == -1) {
-        std::cerr << "ERROR: SENDING FAILED!" << std::endl;
-        return {};
+    int readed = 0, respLen = 0;
+    int memSize = 1024;
+    int CRLF = 0; // 4 consecutive CRLF means end of header
+    std::vector<char> buf(memSize, 0);
+
+    while ((readed = read(clientSocket, &buf[respLen], 1)) != 0) {
+        if (readed < 0) {
+            std::cerr << "ERROR: READING FAILURE!" << std::endl;
+            return {};
+        }
+        if (respLen + readed >= memSize) {
+            memSize *= 2;
+            buf.resize(memSize);
+        }
+
+        respLen += readed;
+        buf[respLen] = '\0';
+
+        if (buf[respLen - 1] == '\r' || buf[respLen - 1] == '\n') {
+            CRLF++;
+        } else {
+            CRLF = 0;
+        }
+
+        if (CRLF == 4) {
+            break;
+        }
     }
 
-    int memSize = 4096;
-    std::string response;
-    response.resize(memSize);
-
-    int readed = read(clientSocket, &response[0], memSize - 1);
-    if (readed < 0) {
-        std::cerr << "ERROR: READING FAILURE!" << std::endl;
-        return {};
-    }
-    response[readed] = 0;
+    std::string response(buf.data());
     return response;
 }
